@@ -1,0 +1,121 @@
+<%- include('partials/header.ejs') %>
+
+  <body>
+
+    <%- include('partials/navbar.ejs') %>
+
+      <main>
+        <section class="my-5">
+          <div class="w-75 m-auto">
+            <% if (locals.error) { %>
+              <div class="mb-3">
+                <div class="alert alert-danger" role="alert">
+                  <%= error %>
+                </div>
+              </div>
+              <% } %>
+                <form method="post" action="/G2_page">
+                  <h5 class="text-center">Personal Information</h2>
+                    <div class="mb-3">
+                      <label for="first_name" class="form-label">First Name</label>
+                      <input type="text" class="form-control" name="first_name" id="first_name" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="last_name" class="form-label">Last Name</label>
+                      <input type="text" class="form-control" name="last_name" id="last_name" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" class="form-control" name="email" id="email" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="license_no" class="form-label">License No</label>
+                      <input type="text" size="8" class="form-control" name="license_no" id="license_no" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="age" class="form-label">Age</label>
+                      <input type="number" class="form-control" name="age" id="age" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="dob" class="form-label">Date of Birth</label>
+                      <input type="date" class="form-control" name="dob" id="dob" required>
+                    </div>
+
+                    <h5 class="my-5 text-center">Car Details</h5>
+                    <div class="mb-3">
+                      <label for="maker" class="form-label">Maker</label>
+                      <input type="text" class="form-control" name="maker" id="maker" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="model" class="form-label">Model</label>
+                      <input type="text" class="form-control" name="model" id="model" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="year" class="form-label">Year</label>
+                      <input type="number" class="form-control" name="year" id="year" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="plat_no" class="form-label">Plat No</label>
+                      <input type="text" class="form-control" name="plat_no" id="plat_no" required>
+                    </div>
+
+                    <h5 class="my-5 text-center">Appointment Slot</h5>
+                    <div class="mb-3">
+                      <label for="date" class="form-label">Test Date</label>
+                      <input type="date" class="form-control" name="date" id="date" onchange="getTimeSlots()" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="time" class="form-label">Test Time</label>
+                      <select class="form-control" name="time" id="time" required>
+                      </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+          </div>
+
+        </section>
+      </main>
+
+      <script>
+        function getTimeSlots() {
+          const date = document.getElementById('date').value;
+          const timeSlotSelect = document.getElementById('time');
+
+          if (date) {
+            // Clear options
+            timeSlotSelect.innerHTML = '';
+
+            // Fetch time slots for the selected date
+            fetch('/appointment/slots?date=' + date)
+              .then(response => response.json())
+              .then(data => {
+                data.forEach(slot => {
+                  var option = document.createElement('option');
+                  option.value = slot.time;
+                  option.textContent = slot.time;
+
+                  // disable option if it's already booked
+                  if (!slot.isTimeSlotAvailable) {
+                    option.disabled = true;
+                  }
+
+                  timeSlotSelect.appendChild(option);
+                });
+              })
+              .catch(error => console.error(error));
+          }
+        }
+      </script>
+
+  </body>
+
+  <%- include('partials/footer.ejs') %>

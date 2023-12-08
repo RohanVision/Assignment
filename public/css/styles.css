@@ -1,0 +1,16 @@
+.dark-background {
+  background-color: #534f58;
+  color: white !important;
+}
+
+body {
+  background-color: #f2f2f2;
+}
+
+.top-section {
+  height: 50vh;
+}
+
+.footer-hero-text {
+  font-family: 'BenchNine', sans-serif;
+}

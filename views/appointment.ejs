@@ -1,0 +1,47 @@
+<%- include('partials/header.ejs') %>
+
+  <body>
+
+    <%- include('partials/navbar.ejs') %>
+
+      <main>
+        <section class="bottom-section mt-5">
+          <div class="px-5">
+            <h5 class="text-center">Add new Slots</h5>
+
+            <div class="container">
+              <div class="row">
+                <% if (locals.error) { %>
+                  <!-- show errors -->
+                  <div class="col-sm-12">
+                    <div class="alert alert-danger" role="alert">
+                      <%- locals.error %>
+                    </div>
+                  </div>
+                  <% } %>
+
+                    <div class="col-sm-12">
+                      <form method="post" action="/appointment">
+                        <div class="mb-3">
+                          <label for="date" class="form-label">Date</label>
+                          <input type="date" class="form-control" id="date" name="date">
+                        </div>
+                        <div class="mb-3">
+                          <label for="time" class="form-label">Time</label>
+                          <input type="time" class="form-control" id="time" name="time">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Slot</button>
+
+                      </form>
+                    </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </main>
+
+  </body>
+
+  <%- include('partials/footer.ejs') %>
