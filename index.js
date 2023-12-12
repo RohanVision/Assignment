@@ -61,6 +61,7 @@ app.get('/Dashboard', (req, res) => res.render('dashboard'));
 app.get('/Login', (req, res) => res.render('login'));
 app.get('/G_page', authMiddleware, userController.renderGPage);
 app.get('/G2_page', authMiddleware, userController.renderG2Page);
+app.get('/examiner', authMiddleware, userController.renderExaminerPage);
 
 app.post('/G_page', authMiddleware, userController.get);
 app.post('/G2_page', authMiddleware, userController.store);

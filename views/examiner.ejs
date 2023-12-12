@@ -1,0 +1,119 @@
+<%- include('partials/header.ejs') %>
+
+    <body>
+        <%- include('partials/navbar.ejs') %>
+            <section class="my-5">
+                <div class="w-75 m-auto">
+                    <h5 class="text-center">Personal Information</h2>
+                        <div class="container-fluid">
+                            <form class="my-5 row" method="get">
+                                <div class="form-group col-4">
+                                    <label for="testType">Filter by test type:</label>
+                                    <select id="testType" name="testType" onchange="filterList()" class="form-select"
+                                        aria-label="Apply Filter">
+                                        <option selected>Select to apply filter</option>
+                                        <option value="G2">G2</option>
+                                        <option value="G">G</option>
+                                    </select>
+                                </div>
+                            </form>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Car Model</th>
+                                            <th scope="col">Car Year</th>
+                                            <th scope="col">Car Plate No</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% if (driverList && driverList.length> 0) { %>
+
+                                            <% for (const driver of driverList) { %>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <%= driver.firstname %>
+                                                            <%= driver.lastname %>
+                                                    </th>
+                                                    <td>
+                                                        <%= driver.model %>
+                                                    </td>
+                                                    <td>
+                                                        <%= driver.year %>
+                                                    </td>
+                                                    <td>
+                                                        <%= driver.plat_no %>
+                                                    </td>
+                                                    <td>
+                                                        <!-- <button type="button" class="btn btn-success">
+                                                    Pass</button>
+                                                <button type="button" class="btn btn-danger">User
+                                                    Fail</button> -->
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#<%= driver._id %>_model"
+                                                            data-bs-whatever="@getbootstrap">Action</button>
+                                                        <div class="modal fade" id="<%= driver._id %>_model"
+                                                            tabindex="-1" aria-labelledby="<%= driver._id %>Label"
+                                                            aria-hidden="true">
+
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h1 class="modal-title fs-5 text-dark"
+                                                                            id="<%= driver._id %>Label">
+                                                                            <%= driver.firstname %>
+                                                                                <%= driver.lastname %>
+                                                                        </h1>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form class="my-1" method="post">
+                                                                            <div class="mb-3">
+                                                                                <input type="hidden" name="testType"
+                                                                                    value="g2" />
+                                                                                <input type="hidden" name="driverId"
+                                                                                    value="driverId" />
+                                                                                <label for="notes"
+                                                                                    class="col-form-label">Message:</label>
+                                                                                <textarea class="form-control"
+                                                                                    id="notes" name="notes"
+                                                                                    required></textarea>
+                                                                                <div class="d-flex mt-2">
+                                                                                    <a class="btn btn-success me-2">
+                                                                                        Pass</a>
+                                                                                    <a class="btn btn-danger">
+                                                                                        Fail</a>
+                                                                                </div>
+                                                                            </div>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Submit
+                                                                                Note</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                                    <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                </div>
+            </section>
+
+            <script>
+                function filterList() {
+                    const value = document.getElementById('testType').value;
+                    console.log('value', value);
+                }
+            </script>
+    </body>
+    <%- include('partials/footer.ejs') %>
