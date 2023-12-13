@@ -152,6 +152,8 @@ module.exports = {
             plat_no: "HUI007",
             model: "X7",
             testType: "G",
+            notes: "hello note",
+            status: "Pass",
           },
           {
             _id: "kjhkjhkj",
@@ -161,6 +163,8 @@ module.exports = {
             plat_no: "BY2022",
             model: "GT",
             testType: "G2",
+            notes: "note frm second user",
+            status: "Fail",
           },
         ];
         return res.render("examiner", { driverList: staticArray });

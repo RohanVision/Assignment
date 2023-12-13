@@ -11,6 +11,12 @@
           <div class="w-75 m-auto">
 
             <form method="post" action="/update-g2_page">
+              <% if (user.status) { %>
+              <h2 class="<%= user.status === 'Pass' ? 'text-success' : 'text-danger' %>">License status: <%= user.status %> </h2>
+              <% } %>
+              <%if (user.comment) { %>
+              <p>Comment by Examiner: <%= user.comment %></p>
+              <% } %>
               <input type="hidden" value="<%= user.license_no %>" name="license_no">
               <div class="mb-3">
                 <label for="first_name" class="form-label">First Name</label>

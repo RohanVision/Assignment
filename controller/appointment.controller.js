@@ -2,7 +2,7 @@ const appointmentModel = require("../models/appointment.model");
 
 module.exports = {
   renderAppointments: (req, res) => {
-    res.render('appointment');
+    res.render('appointment', { driverList: [] });
   },
 
   store: async (req, res) => {

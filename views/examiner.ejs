@@ -4,7 +4,7 @@
         <%- include('partials/navbar.ejs') %>
             <section class="my-5">
                 <div class="w-75 m-auto">
-                    <h5 class="text-center">Personal Information</h2>
+                    <h5 class="text-center">Driver status</h2>
                         <div class="container-fluid">
                             <form class="my-5 row" method="get">
                                 <div class="form-group col-4">
@@ -18,19 +18,18 @@
                                 </div>
                             </form>
                             <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Car Model</th>
-                                            <th scope="col">Car Year</th>
-                                            <th scope="col">Car Plate No</th>
-                                            <th scope="col">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% if (driverList && driverList.length> 0) { %>
-
+                                <% if (driverList && driverList.length> 0) { %>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Car Model</th>
+                                                <th scope="col">Car Year</th>
+                                                <th scope="col">Car Plate No</th>
+                                                <th scope="col">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             <% for (const driver of driverList) { %>
                                                 <tr>
                                                     <th scope="row">
@@ -82,12 +81,30 @@
                                                                                     class="col-form-label">Message:</label>
                                                                                 <textarea class="form-control"
                                                                                     id="notes" name="notes"
-                                                                                    required></textarea>
+                                                                                    required><%= driver.notes %></textarea>
                                                                                 <div class="d-flex mt-2">
-                                                                                    <a class="btn btn-success me-2">
-                                                                                        Pass</a>
-                                                                                    <a class="btn btn-danger">
-                                                                                        Fail</a>
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input"
+                                                                                            type="radio"
+                                                                                            name="examStatus"
+                                                                                            id="examStatusFail"
+                                                                                            value="Fail" <%= driver.status === 'Fail' ? 'checked' : ''%>>
+                                                                                        <label class="form-check-label"
+                                                                                            for="examStatusFail">
+                                                                                            Fail
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="form-check ms-3">
+                                                                                        <input class="form-check-input"
+                                                                                            type="radio"
+                                                                                            name="examStatus"
+                                                                                            id="examStatusPass"
+                                                                                            value="Pass" <%= driver.status === 'Pass' ? 'checked' : ''%>>
+                                                                                        <label class="form-check-label"
+                                                                                            for="examStatusPass">
+                                                                                            Pass
+                                                                                        </label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <button type="submit"
@@ -101,9 +118,12 @@
                                                     </td>
                                                 </tr>
                                                 <% } %>
-                                                    <% } %>
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                    <% } else { %>
+                                        <p class="text-center">No Results to show. Please clear filter
+                                            if you have apply.</p>
+                                        <% } %>
                             </div>
                         </div>
                 </div>
