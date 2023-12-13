@@ -32,8 +32,20 @@ const userSchema = new mongoose.Schema({
 
   appointment: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Appointment'
+    ref: 'Appointment',
   },
+
+  test_type: {
+    type: String,
+    enum: ['G2', 'G'],
+  },
+
+  test_result: {
+    type: String,
+    enum: ['Pass', 'Fail'],
+  },
+
+  test_comment: String,
 });
 
 userSchema.pre('save', function (next) {

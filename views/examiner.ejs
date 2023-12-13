@@ -6,15 +6,17 @@
                 <div class="w-75 m-auto">
                     <h5 class="text-center">Driver status</h2>
                         <div class="container-fluid">
-                            <form class="my-5 row" method="get">
-                                <div class="form-group col-4">
+                            <form class="my-5 row" method="get" action="/examiner">
+                                <div class="form-group col-12">
                                     <label for="testType">Filter by test type:</label>
-                                    <select id="testType" name="testType" onchange="filterList()" class="form-select"
+                                    <select id="testType" name="testType" class="form-select"
                                         aria-label="Apply Filter">
-                                        <option selected>Select to apply filter</option>
+                                        <option selected value="">Select to apply filter</option>
                                         <option value="G2">G2</option>
                                         <option value="G">G</option>
                                     </select>
+
+                                    <button type="submit" class="btn btn-primary mt-2">Apply Filter</button>
                                 </div>
                             </form>
                             <div class="table-responsive">
@@ -23,9 +25,11 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">Name</th>
+                                                <th scope="col">Test type</th>
                                                 <th scope="col">Car Model</th>
                                                 <th scope="col">Car Year</th>
                                                 <th scope="col">Car Plate No</th>
+                                                <th scope="col">Result</th>
                                                 <th scope="col">Actions</th>
                                             </tr>
                                         </thead>
@@ -37,6 +41,9 @@
                                                             <%= driver.lastname %>
                                                     </th>
                                                     <td>
+                                                        <%= driver.testType %>
+                                                    </td>
+                                                    <td>
                                                         <%= driver.model %>
                                                     </td>
                                                     <td>
@@ -46,75 +53,57 @@
                                                         <%= driver.plat_no %>
                                                     </td>
                                                     <td>
-                                                        <!-- <button type="button" class="btn btn-success">
-                                                    Pass</button>
-                                                <button type="button" class="btn btn-danger">User
-                                                    Fail</button> -->
-                                                        <button type="button" class="btn btn-primary"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#<%= driver._id %>_model"
-                                                            data-bs-whatever="@getbootstrap">Action</button>
-                                                        <div class="modal fade" id="<%= driver._id %>_model"
-                                                            tabindex="-1" aria-labelledby="<%= driver._id %>Label"
-                                                            aria-hidden="true">
-
+                                                        <%= driver.test_result %>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#<%= driver.firstname %>_model">Action</button>
+                                                        <div class="modal fade" id="<%= driver.firstname %>_model" tabindex="-1" aria-labelledby="<%= driver.firstname %>Label" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h1 class="modal-title fs-5 text-dark"
-                                                                            id="<%= driver._id %>Label">
-                                                                            <%= driver.firstname %>
-                                                                                <%= driver.lastname %>
-                                                                        </h1>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
+                                                                        <h5 class="modal-title" id="<%= driver._id %>Label"><%= driver.firstname %> <%= driver.lastname %></h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <form class="my-1" method="post">
-                                                                            <div class="mb-3">
-                                                                                <input type="hidden" name="testType"
-                                                                                    value="g2" />
-                                                                                <input type="hidden" name="driverId"
-                                                                                    value="driverId" />
-                                                                                <label for="notes"
-                                                                                    class="col-form-label">Message:</label>
-                                                                                <textarea class="form-control"
-                                                                                    id="notes" name="notes"
-                                                                                    required><%= driver.notes %></textarea>
-                                                                                <div class="d-flex mt-2">
-                                                                                    <div class="form-check">
-                                                                                        <input class="form-check-input"
-                                                                                            type="radio"
-                                                                                            name="examStatus"
-                                                                                            id="examStatusFail"
-                                                                                            value="Fail" <%= driver.status === 'Fail' ? 'checked' : ''%>>
-                                                                                        <label class="form-check-label"
-                                                                                            for="examStatusFail">
-                                                                                            Fail
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="form-check ms-3">
-                                                                                        <input class="form-check-input"
-                                                                                            type="radio"
-                                                                                            name="examStatus"
-                                                                                            id="examStatusPass"
-                                                                                            value="Pass" <%= driver.status === 'Pass' ? 'checked' : ''%>>
-                                                                                        <label class="form-check-label"
-                                                                                            for="examStatusPass">
-                                                                                            Pass
-                                                                                        </label>
-                                                                                    </div>
+                                                                        <form method="post" action="/exam/result">
+                                                                            <input type="hidden" name="driverId" value="<%= driver._id %>" />
+
+                                                                            <label for="notes" class="col-form-label">Message:</label>
+                                                                            <textarea class="form-control" id="notes" name="notes" required></textarea>
+
+                                                                            <div class="d-flex mt-2">
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input"
+                                                                                        type="radio"
+                                                                                        name="result"
+                                                                                        id="resultFail"
+                                                                                        value="Fail">
+                                                                                    <label class="form-check-label"
+                                                                                        for="resultFail">
+                                                                                        Fail
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="form-check ms-3">
+                                                                                    <input class="form-check-input"
+                                                                                        type="radio"
+                                                                                        name="result"
+                                                                                        id="resultPass"
+                                                                                        value="Pass">
+                                                                                    <label class="form-check-label"
+                                                                                        for="resultPass">
+                                                                                        Pass
+                                                                                    </label>
                                                                                 </div>
                                                                             </div>
-                                                                            <button type="submit"
-                                                                                class="btn btn-primary">Submit
-                                                                                Note</button>
+                                                                            
+                                                                            <button type="submit" class="btn btn-primary">Submit Note</button>
+
                                                                         </form>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </td>
                                                 </tr>
                                                 <% } %>

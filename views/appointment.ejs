@@ -1,72 +1,98 @@
 <%- include('partials/header.ejs') %>
 
   <body>
+
     <%- include('partials/navbar.ejs') %>
-      <section class="my-5">
-        <div class="w-75 m-auto">
-          <h5 class="text-center">License status</h2>
-            <div class="container-fluid">
-              <form class="my-5 row" method="get">
-                <div class="form-group col-4">
-                  <label for="testType">Filter by test type:</label>
-                  <select id="testType" name="testType" onchange="filterList()" class="form-select"
-                    aria-label="Apply Filter">
-                    <option selected>Select to apply filter</option>
-                    <option value="G2">G2</option>
-                    <option value="G">G</option>
-                  </select>
-                </div>
-              </form>
-              <div class="table-responsive">
-                <% if (driverList && driverList.length> 0) { %>
-                  <table class="table">
-                    <thead>
-                      <tr>
+
+      <main>
+        <section class="bottom-section mt-5">
+          <div class="px-5">
+            <h5 class="text-center">Add new Slots</h5>
+
+            <div class="container">
+              <div class="row">
+                <% if (locals.error) { %>
+                  <!-- show errors -->
+                  <div class="col-sm-12">
+                    <div class="alert alert-danger" role="alert">
+                      <%- locals.error %>
+                    </div>
+                  </div>
+                  <% } %>
+
+                    <div class="col-sm-12">
+                      <form method="post" action="/appointment">
+                        <div class="mb-3">
+                          <label for="date" class="form-label">Date</label>
+                          <input type="date" class="form-control" id="date" name="date">
+                        </div>
+                        <div class="mb-3">
+                          <label for="time" class="form-label">Time</label>
+                          <input type="time" class="form-control" id="time" name="time">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Slot</button>
+
+                      </form>
+                    </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="bottom-section mt-5">
+          <div class="px-5">
+          <h5 class="text-center">Appointments</h5>
+          <% if (driverList && driverList.length> 0) { %>
+            <table class="table">
+                <thead>
+                    <tr>
                         <th scope="col">Name</th>
+                        <th scope="col">Test type</th>
                         <th scope="col">Car Model</th>
                         <th scope="col">Car Year</th>
                         <th scope="col">Car Plate No</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <% for (const driver of driverList) { %>
+                        <th scope="col">Result</th>
+                        <th scope="col">Result comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (const driver of driverList) { %>
                         <tr>
-                          <th scope="row">
-                            <%= driver.firstname %>
-                              <%= driver.lastname %>
-                          </th>
-                          <td>
-                            <%= driver.model %>
-                          </td>
-                          <td>
-                            <%= driver.year %>
-                          </td>
-                          <td>
-                            <%= driver.plat_no %>
-                          </td>
-                          <td>
-                            <%= driver.status %>
-                          </td>
+                            <th scope="row">
+                                <%= driver.firstname %>
+                                    <%= driver.lastname %>
+                            </th>
+                            <td>
+                                <%= driver.testType %>
+                            </td>
+                            <td>
+                                <%= driver.model %>
+                            </td>
+                            <td>
+                                <%= driver.year %>
+                            </td>
+                            <td>
+                                <%= driver.plat_no %>
+                            </td>
+                            <td>
+                                <%= driver.test_result %>
+                            </td>
+                            <td>
+                                <%= driver.test_comment %>
+                            </td>
                         </tr>
                         <% } %>
-
-                    </tbody>
-                  </table>
-                  <% } else { %>
-                    <p class="text-center">No Results to show. Please clear filter if you have apply.</p>
-                    <% } %>
-              </div>
+                </tbody>
+            </table>
+            <% } else { %>
+                <p class="text-center">No Results to show. Please clear filter if you have apply.</p>
+              <% } %>
             </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      <script>
-        function filterList() {
-          const value = document.getElementById('testType').value;
-          console.log('value', value);
-        }
-      </script>
   </body>
+
   <%- include('partials/footer.ejs') %>

@@ -41,6 +41,7 @@ app.listen(PORT, () => {
 const session = require('express-session');
 const authMiddleware = require('./middleware/auth.middleware');
 const adminMiddleware = require('./middleware/admin.middleware');
+const examinerMiddleware = require('./middleware/examiner.middleware');
 
 app.use(session({
   secret: 'this is a secret!',
@@ -61,7 +62,7 @@ app.get('/Dashboard', (req, res) => res.render('dashboard'));
 app.get('/Login', (req, res) => res.render('login'));
 app.get('/G_page', authMiddleware, userController.renderGPage);
 app.get('/G2_page', authMiddleware, userController.renderG2Page);
-app.get('/examiner', authMiddleware, userController.renderExaminerPage);
+app.get('/examiner', examinerMiddleware, userController.renderExaminerPage);
 
 app.post('/G_page', authMiddleware, userController.get);
 app.post('/G2_page', authMiddleware, userController.store);
@@ -74,3 +75,4 @@ app.get('/logout', authController.logout);
 app.get('/appointment', authMiddleware, adminMiddleware, appointmentController.renderAppointments);
 app.post('/appointment', authMiddleware, adminMiddleware, appointmentController.store);
 app.get('/appointment/slots', appointmentController.getSlots);
+app.post('/exam/result', examinerMiddleware, userController.updateResult);

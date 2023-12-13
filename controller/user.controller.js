@@ -31,6 +31,7 @@ module.exports = {
           year: req.body.year,
           plat_no: req.body.plat_no,
         },
+        test_type: "G2"
       },
       { new: true }
     )
@@ -91,8 +92,10 @@ module.exports = {
   },
 
   update: (req, res) => {
+    const { userId } = req.session;
+
     UserModel.findOneAndUpdate(
-      { license_no: req.body.license_no },
+      { _id: userId, },
       {
         car_details: {
           maker: req.body.maker,
@@ -100,9 +103,24 @@ module.exports = {
           year: req.body.year,
           plat_no: req.body.plat_no,
         },
-      }
+        test_type: "G",
+      },
+      { new: true }
     )
-      .then(result => {
+      .then(async (result) => {
+        const appointmentData = await appointmentModel.findOne({
+          date: req.body.date,
+          time: req.body.time,
+        });
+
+        appointmentData.isTimeSlotAvailable = false;
+
+        await appointmentData.save();
+
+        result.appointment = appointmentData._id;
+
+        await result.save();
+
         return res.redirect("/G_page");
       })
       .catch(err => {
@@ -140,37 +158,66 @@ module.exports = {
 
   renderExaminerPage: (req, res) => {
     const { userId } = req.session;
+    const testType = req.query.testType;
 
-    UserModel.findById(userId)
+    const query = {};
+
+    if (testType) {
+      query.test_type = testType;
+    }
+
+    UserModel.find({
+      _id: {
+        $ne: userId,
+      },
+      appointment: {
+        $ne: null,
+      },
+      ...query,
+    })
       .then(result => {
-        const staticArray = [
-          {
-            _id: "qweqwwwewqeqw",
-            firstname: "XYZ",
-            lastname: "abc",
-            year: 2023,
-            plat_no: "HUI007",
-            model: "X7",
-            testType: "G",
-            notes: "hello note",
-            status: "Pass",
-          },
-          {
-            _id: "kjhkjhkj",
-            firstname: "jkl",
-            lastname: "qwert",
-            year: 2020,
-            plat_no: "BY2022",
-            model: "GT",
-            testType: "G2",
-            notes: "note frm second user",
-            status: "Fail",
-          },
-        ];
-        return res.render("examiner", { driverList: staticArray });
+        const list = result.map(item => ({
+          _id: item._id,
+          firstname: item.firstname,
+          lastname: item.lastname,
+          year: item.car_details.year,
+          plat_no: item.car_details.plat_no,
+          model: item.car_details.model,
+          testType: item.test_type,
+          email: item.email,
+          username: item.username,
+          dob: item.dob,
+          license_no: item.license_no,
+          appointment: item.appointment,
+          test_result: item.test_result,
+          test_comment: item.test_comment,
+        }));
+
+        return res.render("examiner", { driverList: list });
       })
       .catch(err => {
+        console.log(err);
         return res.render("examiner", { driverList: [] });
+      });
+  },
+
+  updateResult: (req, res) => {
+    UserModel.findOneAndUpdate(
+      {
+        _id: req.body.driverId,
+      },
+      {
+        test_result: req.body.result,
+        test_comment: req.body.notes,
+      },
+      { new: true }
+    )
+      .then(result => {
+        return res.redirect("/examiner");
+      })
+      .catch(err => {
+        console.log(err);
+        return res.redirect("/examiner");
       });
   },
 };

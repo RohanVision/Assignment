@@ -14,57 +14,78 @@
                 </div>
               </div>
               <% } %>
+            <% if (locals.user.test_result) { %>
+              <div class="mb-3">
+                <div class="alert alert-info" role="alert">
+                  Your test result: <%= locals.user.test_result %>
+                </div>
+              </div>
+              <% } %>
                 <form method="post" action="/G2_page">
                   <h5 class="text-center">Personal Information</h2>
                     <div class="mb-3">
                       <label for="first_name" class="form-label">First Name</label>
-                      <input type="text" class="form-control" name="first_name" id="first_name" required>
+                      <input type="text" class="form-control" name="first_name" id="first_name" <%=user.firstname
+                        ? 'disabled' : '' %>
+                      value="<%= user.firstname %>">
                     </div>
 
                     <div class="mb-3">
                       <label for="last_name" class="form-label">Last Name</label>
-                      <input type="text" class="form-control" name="last_name" id="last_name" required>
+                      <input type="text" class="form-control" name="last_name" id="last_name" <%=user.lastname
+                        ? 'disabled' : '' %>
+                      value="<%= user.lastname %>">
                     </div>
 
                     <div class="mb-3">
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" class="form-control" name="email" id="email" required>
+                      <input type="email" class="form-control" name="email" id="email" <%=user.email ? 'disabled' : ''
+                        %>
+                      value="<%= user.email %>">
                     </div>
 
                     <div class="mb-3">
                       <label for="license_no" class="form-label">License No</label>
-                      <input type="text" size="8" class="form-control" name="license_no" id="license_no" required>
+                      <input type="text" size="8" class="form-control" name="license_no" id="license_no"
+                        <%=user.license_no ? 'disabled' : '' %>
+                      value="<%= user.license_no %>">
                     </div>
 
                     <div class="mb-3">
                       <label for="age" class="form-label">Age</label>
-                      <input type="number" class="form-control" name="age" id="age" required>
+                      <input type="number" class="form-control" name="age" id="age" <%=user.age ? 'disabled' : '' %>
+                      value="<%= user.age %>">
                     </div>
 
                     <div class="mb-3">
                       <label for="dob" class="form-label">Date of Birth</label>
-                      <input type="date" class="form-control" name="dob" id="dob" required>
+                      <input type="date" class="form-control" name="dob" id="dob" <%=user.dob ? 'disabled' : '' %>
+                      value="<%= user.dob ? new Date(user.dob).toDateString(): new Date() %>">
                     </div>
 
                     <h5 class="my-5 text-center">Car Details</h5>
                     <div class="mb-3">
                       <label for="maker" class="form-label">Maker</label>
-                      <input type="text" class="form-control" name="maker" id="maker" required>
+                      <input type="text" class="form-control" name="maker" id="maker"
+                        value="<%= user.car_details.maker %>">
                     </div>
 
                     <div class="mb-3">
                       <label for="model" class="form-label">Model</label>
-                      <input type="text" class="form-control" name="model" id="model" required>
+                      <input type="text" class="form-control" name="model" id="model"
+                        value="<%= user.car_details.model %>">
                     </div>
 
                     <div class="mb-3">
                       <label for="year" class="form-label">Year</label>
-                      <input type="number" class="form-control" name="year" id="year" required>
+                      <input type="number" class="form-control" name="year" id="year"
+                        value="<%= user.car_details.year %>">
                     </div>
 
                     <div class="mb-3">
                       <label for="plat_no" class="form-label">Plat No</label>
-                      <input type="text" class="form-control" name="plat_no" id="plat_no" required>
+                      <input type="text" class="form-control" name="plat_no" id="plat_no"
+                        value="<%= user.car_details.plat_no %>">
                     </div>
 
                     <h5 class="my-5 text-center">Appointment Slot</h5>
